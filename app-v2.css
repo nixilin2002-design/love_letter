@@ -1,0 +1,341 @@
+/* ══════════════════════════════════════════════════
+   ENVELOPE ── 复古文艺风 · 纸质纹理
+   ══════════════════════════════════════════════════ */
+
+/* Stage & letter */
+.envelope-stage{width:100%;position:relative;perspective:1300px;}
+.envelope-stage .card.env-letter{display:none;}
+.envelope-stage.opened .card.env-letter{display:block;animation:letterRise .85s cubic-bezier(.2,.7,.25,1) forwards;transform-origin:50% 100%;}
+@keyframes letterRise{from{opacity:0;transform:translateY(48px) scale(.92);}to{opacity:1;transform:none;}}
+.envelope{position:relative;width:100%;aspect-ratio:5/3.05;cursor:pointer;transform-style:preserve-3d;}
+.envelope-stage.opening .envelope{animation:envFade 1s ease forwards;pointer-events:none;}
+.envelope-stage.opened .envelope{display:none;}
+@keyframes envFade{0%,55%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(.84) translateY(24px);}}
+
+/* Pocket */
+.env-pocket{position:absolute;left:0;right:0;bottom:0;height:55%;clip-path:polygon(0 0,50% 38%,100% 0,100% 100%,0 100%);z-index:4;}
+
+/* Hint */
+.env-hint{
+  font-family:'Noto Serif SC',serif;
+  font-size:11.5px;font-weight:300;
+  letter-spacing:4px;color:var(--ink2);
+  font-style:italic;
+  text-align:center;margin-top:14px;
+  animation:hintPulse 2.4s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+.envelope-stage.opening .env-hint,.envelope-stage.opened .env-hint{opacity:0;transition:opacity .25s;animation:none;}
+
+/* Burst particles */
+.env-burst{position:absolute;left:50%;top:54%;width:0;height:0;pointer-events:none;z-index:11;}
+.env-burst span{position:absolute;left:0;top:0;opacity:0;transform:translate(-50%,-50%);}
+.envelope-stage.opening .env-burst span{animation:envBurst .95s ease-out forwards;}
+@keyframes envBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.4);}25%{opacity:1;}100%{opacity:0;transform:translate(calc(-50% + var(--bx)),calc(-50% + var(--by))) scale(1.1) rotate(var(--br));}}
+
+.env-body{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 18% 12%, rgba(255,220,210,.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 88% 88%, rgba(241,228,210,.6) 0%, transparent 60%),
+    linear-gradient(160deg,#fdf7f1 0%, #f7e9dc 60%, #f3dad0 100%);
+  border:1px solid rgba(201,123,110,.18);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.7) inset,
+    0 8px 28px -8px rgba(201,123,110,.18),
+    0 2px 6px rgba(120,80,60,.06);
+  border-radius:6px;
+  overflow:hidden;
+}
+[data-theme="dark"] .env-body{
+  background:linear-gradient(160deg,#3a2a26 0%,#28191a 100%);
+  border-color:rgba(255,200,180,.1);
+}
+[data-skin="starry"] .env-body{
+  background:linear-gradient(160deg,#1f2a44 0%,#121a30 100%);
+  border-color:#2c3a5e;
+}
+[data-skin="cream"] .env-body{
+  background:linear-gradient(160deg,#fffdf6 0%,#f6ead4 100%);
+}
+
+/* paper texture grain */
+.env-body::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(circle at 22% 30%, rgba(255,255,255,.5) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 80%, rgba(120,80,60,.04) 0 1px, transparent 2px),
+    radial-gradient(circle at 45% 60%, rgba(120,80,60,.03) 0 1px, transparent 2px);
+  background-size:80px 80px, 100px 100px, 60px 60px;
+  opacity:.7;mix-blend-mode:multiply;
+}
+
+/* botanical sprig in top-left, fine line */
+.env-body::after{
+  content:'';position:absolute;top:14px;left:18px;width:54px;height:42px;z-index:2;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 50' fill='none' stroke='%23b88a7a' stroke-width='.9' stroke-linecap='round'><path d='M5 45 Q 22 30 38 12'/><path d='M14 38 Q 8 36 4 39'/><path d='M14 38 Q 14 32 12 28'/><path d='M22 30 Q 16 28 12 30'/><path d='M22 30 Q 22 24 20 20'/><path d='M30 22 Q 24 20 21 22'/><path d='M30 22 Q 30 16 28 12'/><circle cx='40' cy='10' r='2.4' fill='%23e6b8b0' stroke='none'/><circle cx='44' cy='14' r='1.6' fill='%23e6b8b0' stroke='none'/><circle cx='37' cy='14' r='1.6' fill='%23e6b8b0' stroke='none'/></svg>");
+  background-size:contain;background-repeat:no-repeat;opacity:.85;
+}
+[data-theme="dark"] .env-body::after{filter:brightness(1.4) saturate(.6) opacity(.6);}
+
+/* stamp ── replaced with delicate "postage" card */
+.env-stamp{
+  position:absolute;top:14px;right:16px;
+  width:38px;height:46px;
+  background:linear-gradient(180deg,#fff7f0 0%,#fbe5dc 100%);
+  border:none;
+  border-radius:3px;
+  filter:drop-shadow(0 1px 2px rgba(120,80,60,.18));
+  display:flex;align-items:center;justify-content:center;
+  z-index:3;
+  /* perforated edges */
+  -webkit-mask:radial-gradient(circle at 50% 0, transparent 1.5px, #000 2px) 50% 0/8px 4px repeat-x,
+              radial-gradient(circle at 50% 100%, transparent 1.5px, #000 2px) 50% 100%/8px 4px repeat-x,
+              radial-gradient(circle at 0 50%, transparent 1.5px, #000 2px) 0 50%/4px 8px repeat-y,
+              radial-gradient(circle at 100% 50%, transparent 1.5px, #000 2px) 100% 50%/4px 8px repeat-y,
+              linear-gradient(#000,#000);
+  -webkit-mask-composite:source-over;
+          mask:radial-gradient(circle at 50% 0, transparent 1.5px, #000 2px) 50% 0/8px 4px repeat-x,
+              radial-gradient(circle at 50% 100%, transparent 1.5px, #000 2px) 50% 100%/8px 4px repeat-x,
+              radial-gradient(circle at 0 50%, transparent 1.5px, #000 2px) 0 50%/4px 8px repeat-y,
+              radial-gradient(circle at 100% 50%, transparent 1.5px, #000 2px) 100% 50%/4px 8px repeat-y,
+              linear-gradient(#000,#000);
+}
+.env-stamp::before{
+  content:'';
+  width:18px;height:18px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c97b6e' stroke-width='1.5' stroke-linecap='round'><path d='M12 21s-7-4.5-7-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 19 10c0 6.5-7 11-7 11Z'/></svg>");
+  background-size:contain;background-repeat:no-repeat;
+}
+
+/* address handwriting */
+.env-addr{
+  position:absolute;left:18px;bottom:14px;right:16px;
+  font-size:10.5px;color:rgba(132,90,72,.6);
+  letter-spacing:.5px;font-weight:300;z-index:3;line-height:1.7;
+  font-family:'Ma Shan Zheng',cursive;
+}
+.env-addr br + *,.env-addr span{font-family:'Noto Serif SC',serif;font-size:9px;letter-spacing:2.5px;}
+[data-theme="dark"] .env-addr{color:rgba(220,190,175,.6);}
+
+/* flap — soft blush, a touch lighter than body, no harsh contrast */
+.env-flap{
+  position:absolute;top:0;left:0;right:0;height:62%;
+  background:linear-gradient(160deg,#fbece1 0%, #efd5c8 100%);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:50% 0;
+  transform:rotateX(0deg);
+  transition:transform .85s cubic-bezier(.55,-.05,.6,1.05);
+  z-index:5;
+  filter:drop-shadow(0 1px 1px rgba(180,120,100,.08));
+}
+[data-theme="dark"] .env-flap{background:linear-gradient(160deg,#3d2c28 0%,#2c1d1c 100%);}
+[data-skin="starry"] .env-flap{background:linear-gradient(160deg,#243254 0%,#162342 100%);}
+[data-skin="cream"] .env-flap{background:linear-gradient(160deg,#f8ecd0 0%,#ecdab5 100%);}
+
+/* faint inner crease line on flap */
+.env-flap::before{
+  content:'';position:absolute;left:0;right:0;top:0;bottom:0;
+  background:linear-gradient(180deg, rgba(200,140,120,.06) 0%, transparent 30%);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+}
+
+/* SEAL ── small wax dot with a single dried flower */
+.env-seal{
+  position:absolute;left:50%;top:54%;
+  transform:translate(-50%,-50%);
+  width:46px;height:46px;border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 32%, #f3a89a 0%, #d77f70 55%, #b56558 100%);
+  box-shadow:
+    0 2px 5px rgba(140,60,50,.3),
+    inset 0 -1px 3px rgba(80,30,20,.22),
+    inset 0 1px 2px rgba(255,210,200,.5);
+  display:flex;align-items:center;justify-content:center;
+  z-index:7;
+  transition:transform .35s ease,opacity .35s ease;
+}
+.env-seal::before{
+  content:'';position:absolute;inset:4px;border-radius:50%;
+  border:1px dashed rgba(255,235,225,.45);
+}
+.env-seal::after{
+  /* hidden - using emoji instead */
+  content:'';width:0;height:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 11.79 3.82 12 5C12.21 3.82 13.76 3 15.5 3C18.58 3 21 5.42 21 8.5C21 14.5 12 21 12 21Z' fill='%23fff3ec' opacity='.95'/></svg>");
+  background-size:contain;background-repeat:no-repeat;
+  filter:drop-shadow(0 1px 2px rgba(80,30,20,.3));
+}
+.env-seal-letter{display:flex;align-items:center;justify-content:center;font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px rgba(80,30,20,.3));}
+
+/* Washi tape across top */
+.env-flap::after{
+  content:'';position:absolute;top:8px;left:50%;
+  transform:translateX(-50%) rotate(-2deg);
+  width:84px;height:14px;
+  background:
+    repeating-linear-gradient(90deg, rgba(201,123,110,.22) 0 6px, rgba(230,184,176,.22) 6px 12px);
+  border-radius:1px;
+  opacity:.55;
+  z-index:6;
+  pointer-events:none;
+}
+[data-theme="dark"] .env-flap::after{opacity:.35;}
+
+/* hint type — italic, lighter */
+.env-hint{
+  font-family:'Noto Serif SC',serif;
+  font-size:11.5px;font-weight:300;
+  letter-spacing:4px;color:var(--ink2);
+  font-style:italic;
+}
+
+/* ── Map long-press hint ── */
+.map-longpress-hint{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(44,24,16,.82);color:#fff;padding:6px 14px;border-radius:20px;font-size:10.5px;letter-spacing:2px;font-weight:300;pointer-events:none;z-index:400;animation:lphFade 4.5s ease forwards;font-family:'Noto Serif SC',serif;white-space:nowrap;}
+@keyframes lphFade{0%{opacity:0;transform:translate(-50%,8px);}10%,80%{opacity:1;transform:translate(-50%,0);}100%{opacity:0;transform:translate(-50%,-4px);}}
+
+/* ── Wish-done extras ── */
+.skip-btn{flex:1;padding:12px;background:none;border:1px solid var(--border);font-size:13px;letter-spacing:2px;color:var(--ink2);cursor:pointer;font-family:'Noto Serif SC',serif;border-radius:2px;}
+.done-wish-title{text-align:center;font-family:'Ma Shan Zheng',cursive;font-size:19px;color:var(--rose);margin:-8px 20px 6px;line-height:1.4;}
+.done-wish-sub{text-align:center;font-size:11px;letter-spacing:2px;color:var(--gold);margin:0 20px 18px;font-weight:300;}
+.wish-memory-thumb{width:100%;max-height:140px;object-fit:cover;border-radius:4px;margin-top:8px;}
+.wish-memory-note{font-size:11.5px;color:var(--ink2);font-weight:300;line-height:1.6;margin-top:6px;font-style:italic;border-left:2px solid var(--rose-l);padding-left:8px;}
+.wish-memory-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--gold);margin-top:5px;letter-spacing:1px;font-weight:300;}
+
+/* ══════════════════════════════════════════════════
+   MAP topbar spacing
+   ══════════════════════════════════════════════════ */
+#mapSubtitle{
+  display:block;
+  font-size:12px;
+  letter-spacing:1px;
+  color:var(--ink2);
+  font-weight:300;
+  margin-top:4px;
+}
+
+/* ══════════════════════════════════════════════════
+   MAP stats — floating pill (matches index.html v2 styles)
+   No JS pillify needed; CSS handles everything.
+   ══════════════════════════════════════════════════ */
+.map-stats-bar{
+  margin-bottom:12px !important;
+}
+.map-stat-num,
+#statPhotos, #statCities, #statCountries{
+  font-family:'Ma Shan Zheng',cursive !important;
+  font-size:20px !important;
+  color:var(--rose) !important;
+  line-height:1 !important;
+}
+.map-stat-label{
+  font-size:11px !important;
+  color:var(--ink2) !important;
+  letter-spacing:1px !important;
+  font-weight:300 !important;
+}
+
+@media(max-width:380px){
+  .map-stats-bar{margin:-28px 14px 10px !important;}
+  .map-stat-num,
+  #statPhotos,#statCities,#statCountries{font-size:17px !important;}
+  .map-stat-label{font-size:10px !important;}
+}
+
+/* ══════════════════════════════════════════════════
+   ✨ 美化4: 心愿完成动效增强
+   ══════════════════════════════════════════════════ */
+.wish-item{
+  transition:opacity .4s ease, transform .3s ease, box-shadow .3s ease;
+}
+.wish-item.completing{
+  animation:wishComplete .5s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes wishComplete{
+  0%{transform:scale(1);}
+  30%{transform:scale(1.03);}
+  60%{transform:scale(.98);}
+  100%{transform:scale(1);}
+}
+.wish-item.done{
+  opacity:0.6;
+  background:linear-gradient(135deg,var(--bg2) 0%,var(--rose-xl) 100%) !important;
+}
+.wish-item.done .wish-check-icon{
+  transform:scale(1.2) rotate(-5deg);
+}
+
+/* ══════════════════════════════════════════════════
+   ✨ 美化7: 首页进场动画优化
+   ══════════════════════════════════════════════════ */
+.letter-inner > *{
+  animation:fadeUp .65s ease both;
+}
+@keyframes fadeUpFresh{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ══════════════════════════════════════════════════
+   ✨ 美化2: 地图 topbar 副标题增强
+   ══════════════════════════════════════════════════ */
+.map-topbar-sub{
+  font-size:12px;
+  color:var(--ink3);
+  letter-spacing:1px;
+  font-weight:300;
+  margin-top:4px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.map-topbar-sub::before{
+  content:'';
+  display:inline-block;
+  width:4px;height:4px;
+  border-radius:50%;
+  background:var(--rose-l);
+}
+
+/* ══════════════════════════════════════════════════
+   ✨ 美化3: 地图弹窗进一步优化
+   ══════════════════════════════════════════════════ */
+.leaflet-popup-close-button{
+  display:none !important;
+}
+.popup-inner{
+  padding:10px 12px 10px;
+}
+.popup-note{
+  font-size:11px;color:var(--ink2);font-weight:300;
+  font-style:italic;
+  border-left:2px solid var(--rose-l);
+  padding-left:6px;
+  margin-top:4px;
+  line-height:1.5;
+}
+
+/* ══════════════════════════════════════════════════
+   ✨ 美化6: 纪念日卡片悬停效果
+   ══════════════════════════════════════════════════ */
+.anni-card{
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease;
+  cursor:default;
+}
+.anni-card:active{
+  transform:scale(.97);
+}
+.anni-card.today-card{
+  background:linear-gradient(135deg,var(--bg2) 0%,var(--rose-xl) 100%);
+  animation:todayPulse 2.5s ease-in-out infinite;
+}
+@keyframes todayPulse{
+  0%,100%{box-shadow:0 2px 8px var(--shadow);}
+  50%{box-shadow:0 4px 20px rgba(201,123,110,.2);}
+}
+
+/* ══════════════════════════════════════════════════
+   ✨ 美化1: 打字游标颜色适配深色
+   ══════════════════════════════════════════════════ */
+[data-theme="dark"] .typing-cursor{background:var(--rose);}
+[data-skin="starry"] .typing-cursor{background:var(--rose);}
