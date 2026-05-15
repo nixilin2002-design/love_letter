@@ -1,0 +1,37 @@
+{
+  "name": "每日情书",
+  "short_name": "情书",
+  "description": "写给你的每一天",
+  "start_url": "/love_letter/",
+  "scope": "/love_letter/",
+  "display": "standalone",
+  "background_color": "#fdf6ee",
+  "theme_color": "#c97b6e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
