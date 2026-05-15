@@ -1,0 +1,68 @@
+<!-- MODAL: Add Pin from map long-press -->
+<div class="modal-overlay" id="modalPin" onclick="closeModalIfBg(event,'modalPin')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">在这里留下足迹 📍</div>
+    <input type="hidden" id="pinLat"/>
+    <input type="hidden" id="pinLng"/>
+    <input type="hidden" id="pinCountry"/>
+    <input type="hidden" id="pinPhotoData"/>
+    <div class="modal-field">
+      <label class="modal-label">地点名称</label>
+      <input class="modal-input" id="pinCity" placeholder="自动识别中..." type="text"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">想留下的话</label>
+      <input class="modal-input" id="pinNote" placeholder="第一次约会的咖啡馆..." type="text"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">日期</label>
+      <input class="modal-input" id="pinDate" type="date"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">照片（可选）</label>
+      <label class="modal-photo-btn" for="pinPhotoInput">📷 选择一张照片</label>
+      <input id="pinPhotoInput" type="file" accept="image/*" style="display:none" onchange="handlePinPhoto(this)"/>
+      <img class="modal-photo-preview" id="pinPhotoPreview" alt=""/>
+    </div>
+    <div class="modal-status" id="pinStatus"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal('modalPin')">取消</button>
+      <button class="modal-confirm" onclick="confirmAddPin()">添加 ❤️</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Wish completed -->
+<div class="modal-overlay" id="modalDone" onclick="closeModalIfBg(event,'modalDone')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">完成啦 🎉</div>
+    <div class="done-wish-title" id="doneWishTitle"></div>
+    <div class="done-wish-sub">把这一刻留下来 · 写进你们的回忆</div>
+    <input type="hidden" id="donePhotoData"/>
+    <div class="modal-field">
+      <label class="modal-label">这次的故事</label>
+      <textarea class="modal-textarea" id="doneNote" placeholder="今天我们..."></textarea>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">在哪里完成的（选填，会同步到足迹）</label>
+      <input class="modal-input" id="donePlace" placeholder="Paris, 北京, 涩谷..." type="text"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">日期</label>
+      <input class="modal-input" id="doneDate" type="date"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">照片（可选）</label>
+      <label class="modal-photo-btn" for="donePhotoInput">📷 上传照片</label>
+      <input id="donePhotoInput" type="file" accept="image/*" style="display:none" onchange="handleDonePhoto(this)"/>
+      <img class="modal-photo-preview" id="donePhotoPreview" alt=""/>
+    </div>
+    <div class="modal-status" id="doneStatus"></div>
+    <div class="modal-btns">
+      <button class="skip-btn" onclick="skipWishDone()">仅标记完成</button>
+      <button class="modal-confirm" onclick="confirmWishDone()">保存回忆 ❤️</button>
+    </div>
+  </div>
+</div>
